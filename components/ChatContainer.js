@@ -6,7 +6,7 @@ import { ChatHistoryFrame } from "./ChatHistoryFrame";
 
 const promptId = "cldpqivpj394qz57r8ei0og5979";
 
-export const ChatContainer = () => {
+const ChatContainer = () => {
   const [pendingMessage, setPendingMessage] = useState("");
   const [message, setMessage] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
@@ -76,3 +76,4 @@ export const ChatContainer = () => {
     </div>
   );
 };
+export default ChatContainer;
