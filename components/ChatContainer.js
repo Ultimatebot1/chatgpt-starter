@@ -1,66 +1,72 @@
+import React, { useState, useEffect } from "react";
+import { Button, TextField } from "@mui/material";
 import { useChatGpt } from "@/hook/useChatGpt";
 import { addMessage } from "@/utils/chatHistory";
-import { Button, TextField } from "@mui/material";
-import React, { useEffect } from "react";
 import { ChatHistoryFrame } from "./ChatHistoryFrame";
 
-const promptId = "cld9piv9j049zi7ehio0g5979";
+const promptId = "cldpqivpj394qz57r8ei0og5979";
 
 export const ChatContainer = () => {
-  const [pendingMessage, setPendingMessage] = React.useState("");
-  const [message, setMessage] = React.useState("");
-  const [chatHistory, setChatHistory] = React.useState([]);
-  const { isLoading, history, isSuccess, isError } = useChatGpt(
-    message,
-    promptId,
-    chatHistory
-  );
+  const [pendingMessage, setPendingMessage] = useState("");
+  const [message, setMessage] = useState("");
+  const [chatHistory, setChatHistory] = useState([]);
+
+  const {
+    isLoading,
+    history,
+    isSuccess,
+    isError
+  } = useChatGpt(message, promptId);
 
   useEffect(() => {
-    if (isSuccess || isError) {
+    if (isSuccess && !isError) {
+      setChatHistory((prev) => addMessage(prev || [], message, "user"));
       setMessage("");
+    }
+    if (isError) {
+      console.error("Error fetching chat response.");
     }
   }, [isSuccess, isError]);
 
   return (
-    <div id="chat-container">
-      <a
-        href="https://github.com/nftblackmagic/chatgpt-starter"
-        target="_blank"
-        rel="noreferrer"
-      >
-        <h1>MOVIE to emoji</h1>
-      </a>
-      <ChatHistoryFrame chatHistory={chatHistory} isLoading={isLoading} />
-      <div id="chat-input">
+    <div style={{ padding: "1rem", fontFamily: "Arial", color: "#fff" }}>
+      <h2>UltimateBot1 Console</h2>
+
+      <ChatHistoryFrame
+        chatHistory={chatHistory}
+        isLoading={isLoading}
+      />
+
+      <div style={{ marginTop: "1rem" }}>
         <TextField
-          type="text"
-          onChange={(e) => {
-            setPendingMessage(e.target.value);
-          }}
+          label="Type your message"
+          variant="outlined"
+          fullWidth
+          value={pendingMessage}
+          onChange={(e) => setPendingMessage(e.target.value)}
+          style={{ marginBottom: "1rem", backgroundColor: "#fff" }}
         />
+
         <Button
-          style={{
-            backgroundColor: "black",
-            width: "80px",
-          }}
           variant="contained"
+          style={{ backgroundColor: "black", color: "white" }}
           onClick={() => {
             setMessage(pendingMessage);
-            setChatHistory(addMessage(history || [], pendingMessage, "user"));
+            setChatHistory((prev) =>
+              addMessage(prev || [], pendingMessage, "user")
+            );
+            setPendingMessage("");
           }}
         >
           Send
         </Button>
+
         <Button
-          style={{
-            color: "black",
-            width: "80px",
-            borderColor: "black",
-          }}
           variant="outlined"
+          style={{ marginLeft: "1rem", borderColor: "black", color: "black" }}
           onClick={() => {
             setMessage("");
+            setPendingMessage("");
             setChatHistory([]);
           }}
         >
