@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { Roboto } from "@next/font/google";
-import { ChatContainer } from "@/components/ChatContainer";
+import ChatContainer from "../components/ChatContainer";
 
 const roboto = Roboto({ weight: "400", subsets: ["latin"] });
 
