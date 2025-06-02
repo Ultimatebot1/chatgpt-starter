@@ -37,3 +37,7 @@ const analyzeMarket = async () => {
 };
 
 setInterval(analyzeMarket, 10000); // runs every 10 sec
+// Auto-run after deployment
+(async () => {
+  await analyzeMarket();
+})();
